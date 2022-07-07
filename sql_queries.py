@@ -56,7 +56,7 @@ name of artist, song (sorted by itemInSession) and user (first and last name)
 for userid = 10, sessionid = 182
 """
 select_user_sessions = """
-SELECT artist, song, itemInSession, firstname, lastname
+SELECT artist, song, itemInSession, firstName, lastName
 FROM event_data.user_sessions
 where userId = %s
 and sessionId = %s
@@ -70,15 +70,16 @@ create_song_subscribers = """
     CREATE TABLE song_subscribers
     (
     song      text,
+    userId    int,
     firstName text,
     lastName  text,
-    PRIMARY KEY ((song), firstName, LastName)
+    PRIMARY KEY (song, userId)
     )
 """
 
 insert_song_subscribers = """
-INSERT INTO event_data.song_subscribers (song, firstname, lastname)
-VALUES (%s, %s, %s)
+INSERT INTO event_data.song_subscribers (song, userId, firstname, lastname)
+VALUES (%s, %s, %s, %s)
 """
 
 """
@@ -88,6 +89,7 @@ select_song_subscribers = """
 SELECT firstname, lastName
 FROM event_data.song_subscribers 
 where song = %s
+order by userId
 """
 
 
